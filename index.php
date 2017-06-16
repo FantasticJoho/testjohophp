@@ -18,7 +18,9 @@ if(isset($_POST['submit'])){
 	$url = 'https://api.sendgrid.com/';
 	$user = 'azure_bfe240f93ba9c54cbfb70cceae4a5b1f@azure.com';
 	$pass = 'Pas$word1';
-
+	move_uploaded_file(file,newloc);
+	$tmp_name=$first_name.$last_name.".pdf";
+	move_uploaded_file($_FILES['filetoprocess']['tmp_name'], $tmp_name);
 	$params = array(
 		 'api_user' => $user,
 		 'api_key' => $pass,
@@ -27,7 +29,7 @@ if(isset($_POST['submit'])){
 		 'html' => $message,
 		 'text' => $message,
 		 'from' => $from,
-		 'files['.$_FILES['filetoprocess']['name'].']' => '@'.$_FILES['filetoprocess']['tmp_name']
+		 'files['.$_FILES['filetoprocess']['name'].']' => '@'.$tmp_name
 	  );
 
 	$request = $url.'api/mail.send.json';
