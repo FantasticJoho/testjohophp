@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
     $headers2 = "From:" . $to;
    // mail($to,$subject,$message,$headers);
     //mail($from,$subject2,$message2,$headers2); // sends a copy of the message to the sender
-
+$filePath = dirname(__FILE__);
     // You can also use header('Location: thank_you.php'); to redirect to another page.
 	$url = 'https://api.sendgrid.com/';
 	$user = 'azure_bfe240f93ba9c54cbfb70cceae4a5b1f@azure.com';
@@ -29,7 +29,7 @@ if(isset($_POST['submit'])){
 		 'html' => $message,
 		 'text' => $message,
 		 'from' => $from,
-		 'files['.$_FILES['filetoprocess']['name'].']' => '@'.$tmp_name
+		 'files['.$_FILES['filetoprocess']['name'].']' => '@'.$filePath.$tmp_name
 	  );
 
 	$request = $url.'api/mail.send.json';
