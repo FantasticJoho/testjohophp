@@ -35,8 +35,7 @@ $content = new Content("text/html", "<html><body>".$message."</body></html>");
 
 function sendKitchenSink($maiilbody)
 {
-    $apiKey = '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';
-	//$apiKey = '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';
+    $apiKey = 'machintruc';
     $sg = new \SendGrid($apiKey);
     $request_body = $maiilbody;
     $response = $sg->client->mail()->send()->post($request_body);
