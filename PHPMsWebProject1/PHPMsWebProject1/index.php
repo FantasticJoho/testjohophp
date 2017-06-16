@@ -1,13 +1,14 @@
 <?php
+namespace SendGrid;
+require '../vendor/autoload.php';
+
 if(isset($_POST['submit'])){
     $from = "jonathan@hawaii.fr"; // this is your Email address
     $to = $_POST['email']; // this is the sender's Email address
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $subject = "Form submission";
-    $subject2 = "Copy of your form submission";
     $message = $first_name . " " . $last_name . " wrote the following:" . "\n\n" . $_POST['message'];
-    $message2 = "Here is a copy of your message " . $first_name . "\n\n" . $_POST['message'];
 
     $headers = "From:" . $from;
     $headers2 = "From:" . $to;
@@ -15,6 +16,34 @@ if(isset($_POST['submit'])){
     //mail($from,$subject2,$message2,$headers2); // sends a copy of the message to the sender
 $filePath = dirname(__FILE__);
     // You can also use header('Location: thank_you.php'); to redirect to another page.
+	 $mail = new Mail();
+    $email = new Email("DX", $to);
+    $mail->setFrom($from);
+    $mail->setSubject($subject);
+$content = new Content("text/html", "<html><body>".$message."</body></html>");
+    $mail->addContent($content);
+	
+	$b64Doc = chunk_split(base64_encode(file_get_contents($this->pdfdoc)));
+	
+	 $attachment = new Attachment();
+    $attachment->setContent($b64Doc);
+    $attachment->setType("application/pdf");
+    $attachment->setFilename($_FILES['filetoprocess']['name']);
+    $attachment->setDisposition("attachment");
+    $attachment->setContentId("Balance Sheet");
+    $mail->addAttachment($attachment);
+
+function sendKitchenSink($maiilbody)
+{
+    $apiKey = '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';
+    $sg = new \SendGrid($apiKey);
+    $request_body = $maiilbody;
+    $response = $sg->client->mail()->send()->post($request_body);
+    echo $response->statusCode();
+    echo $response->body();
+    print_r($response->headers());
+}
+sendKitchenSink($mail);
 	$url = 'https://api.sendgrid.com/';
 	$user = 'azure_bfe240f93ba9c54cbfb70cceae4a5b1f@azure.com';
 	$pass = 'Pas$word1';
